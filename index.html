@@ -5,6 +5,148 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Algorithm Topic Checklist</title>
   <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCYOck96dmLC66A9x_ClVpN5YTM1o0WfgA",
+      authDomain: "checklist-18809.firebaseapp.com",
+      projectId: "checklist-18809",
+      storageBucket: "checklist-18809.firebasestorage.app",
+      messagingSenderId: "293572018468",
+      appId: "1:293572018468:web:1c55c18509b432d7ba73b1"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const user = urlParams.get('user') || 'default';
+
+    const data = {
+      "Unit I – Fundamentals & Divide and Conquer": [
+        "Asymptotic Notations",
+        "Substitution Method",
+        "Recursion Tree Method",
+        "Master’s Theorem",
+        "Binary Search",
+        "Merge Sort",
+        "Quick Sort",
+        "Heap and Heap Sort",
+        "Strassen’s Matrix Multiplication"
+      ],
+      "Unit II – Greedy Strategy": [
+        "Greedy Method Basics",
+        "Optimal Merge Patterns",
+        "Huffman Coding",
+        "Kruskal’s Algorithm",
+        "Prim’s Algorithm",
+        "Job Sequencing with Deadlines",
+        "Dijkstra’s Algorithm"
+      ],
+      "Unit III – Dynamic Programming": [
+        "Optimal Substructure & Overlapping Subproblems",
+        "0/1 Knapsack Problem",
+        "Fractional vs 0/1 Knapsack",
+        "Multistage Graph Problem",
+        "Reliability Design",
+        "Floyd-Warshall Algorithm"
+      ],
+      "Unit IV – Backtracking & Branch and Bound": [
+        "Backtracking Strategy",
+        "8-Queens Problem",
+        "Hamiltonian Cycle",
+        "Graph Coloring",
+        "Branch & Bound Basics",
+        "Traveling Salesman Problem",
+        "Lower Bound Theory",
+        "Intro to Parallel Algorithms"
+      ],
+      "Unit V – Trees, Graphs & Complexity": [
+        "Binary Search Trees (BST)",
+        "AVL Trees",
+        "M-Way, 2-3, B/B+/B* Trees",
+        "Red-Black Trees",
+        "DFS and BFS",
+        "P, NP, NP-Complete, NP-Hard",
+        "Polynomial-Time Reductions",
+        "Approximation Algorithms",
+        "Randomized Algorithms",
+        "Quantum Algorithms (Basics)"
+      ]
+    };
+
+    async function getSavedChecks() {
+      const ref = doc(db, 'checklists', user);
+      const snap = await getDoc(ref);
+      return snap.exists() ? snap.data() : {};
+    }
+
+    async function saveChecks(states) {
+      const ref = doc(db, 'checklists', user);
+      await setDoc(ref, states);
+    }
+
+    const contentDiv = document.getElementById('content');
+    const states = await getSavedChecks();
+    const currentStates = {};
+
+    function createCheckbox(id, label) {
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.id = id;
+      checkbox.checked = !!states[id];
+      checkbox.addEventListener('change', () => {
+        currentStates[id] = checkbox.checked;
+        saveChecks({ ...states, ...currentStates });
+      });
+
+      const span = document.createElement('span');
+      span.textContent = label;
+
+      const labelTag = document.createElement('label');
+      labelTag.appendChild(checkbox);
+      labelTag.appendChild(span);
+
+      return labelTag;
+    }
+
+    for (const [unit, topics] of Object.entries(data)) {
+      const h2 = document.createElement('h2');
+      h2.textContent = unit;
+      contentDiv.appendChild(h2);
+
+      const ul = document.createElement('ul');
+
+      topics.forEach((topic, index) => {
+        const li = document.createElement('li');
+
+        const span = document.createElement('span');
+        span.className = 'label';
+        span.textContent = topic;
+        span.title = 'Click to copy';
+        span.addEventListener('click', () => {
+          navigator.clipboard.writeText(topic).then(() => {
+            span.style.backgroundColor = '#FAF4D040';
+            setTimeout(() => { span.style.backgroundColor = ''; }, 400);
+          });
+        });
+
+        li.appendChild(span);
+
+        const checkDiv = document.createElement('div');
+        checkDiv.className = 'checks';
+        checkDiv.appendChild(createCheckbox(`${unit}-${index}-shubhanshi`, 'Shubhanshi'));
+        checkDiv.appendChild(createCheckbox(`${unit}-${index}-anany`, 'Anany'));
+
+        li.appendChild(checkDiv);
+        ul.appendChild(li);
+      });
+
+      contentDiv.appendChild(ul);
+    }
+  </script>
   <style>
     body {
       font-family: 'Special Elite', monospace;
@@ -63,118 +205,6 @@
 </head>
 <body>
 <h1>💕 Anany & Shubhanshi's Algorithm Journal 💕</h1>
-
 <div id="content"></div>
-
-<script>
-  const data = {
-    "Unit I – Fundamentals & Divide and Conquer": [
-      "Asymptotic Notations",
-      "Substitution Method",
-      "Recursion Tree Method",
-      "Master’s Theorem",
-      "Binary Search",
-      "Merge Sort",
-      "Quick Sort",
-      "Heap and Heap Sort",
-      "Strassen’s Matrix Multiplication"
-    ],
-    "Unit II – Greedy Strategy": [
-      "Greedy Method Basics",
-      "Optimal Merge Patterns",
-      "Huffman Coding",
-      "Kruskal’s Algorithm",
-      "Prim’s Algorithm",
-      "Job Sequencing with Deadlines",
-      "Dijkstra’s Algorithm"
-    ],
-    "Unit III – Dynamic Programming": [
-      "Optimal Substructure & Overlapping Subproblems",
-      "0/1 Knapsack Problem",
-      "Fractional vs 0/1 Knapsack",
-      "Multistage Graph Problem",
-      "Reliability Design",
-      "Floyd-Warshall Algorithm"
-    ],
-    "Unit IV – Backtracking & Branch and Bound": [
-      "Backtracking Strategy",
-      "8-Queens Problem",
-      "Hamiltonian Cycle",
-      "Graph Coloring",
-      "Branch & Bound Basics",
-      "Traveling Salesman Problem",
-      "Lower Bound Theory",
-      "Intro to Parallel Algorithms"
-    ],
-    "Unit V – Trees, Graphs & Complexity": [
-      "Binary Search Trees (BST)",
-      "AVL Trees",
-      "M-Way, 2-3, B/B+/B* Trees",
-      "Red-Black Trees",
-      "DFS and BFS",
-      "P, NP, NP-Complete, NP-Hard",
-      "Polynomial-Time Reductions",
-      "Approximation Algorithms",
-      "Randomized Algorithms",
-      "Quantum Algorithms (Basics)"
-    ]
-  };
-
-  const contentDiv = document.getElementById('content');
-
-  function createCheckbox(id, label) {
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.id = id;
-    checkbox.checked = localStorage.getItem(id) === 'true';
-    checkbox.addEventListener('change', () => {
-      localStorage.setItem(id, checkbox.checked);
-    });
-
-    const span = document.createElement('span');
-    span.textContent = label;
-
-    const labelTag = document.createElement('label');
-    labelTag.appendChild(checkbox);
-    labelTag.appendChild(span);
-
-    return labelTag;
-  }
-
-  for (const [unit, topics] of Object.entries(data)) {
-    const h2 = document.createElement('h2');
-    h2.textContent = unit;
-    contentDiv.appendChild(h2);
-
-    const ul = document.createElement('ul');
-
-    topics.forEach((topic, index) => {
-      const li = document.createElement('li');
-
-      const span = document.createElement('span');
-      span.className = 'label';
-      span.textContent = topic;
-      span.title = 'Click to copy';
-      span.addEventListener('click', () => {
-        navigator.clipboard.writeText(topic).then(() => {
-          span.style.backgroundColor = '#FAF4D040';
-          setTimeout(() => { span.style.backgroundColor = ''; }, 400);
-        });
-      });
-
-      li.appendChild(span);
-
-      const checkDiv = document.createElement('div');
-      checkDiv.className = 'checks';
-      checkDiv.appendChild(createCheckbox(`${unit}-${index}-shubhanshi`, 'Shubhanshi'));
-      checkDiv.appendChild(createCheckbox(`${unit}-${index}-anany`, 'Anany'));
-
-      li.appendChild(checkDiv);
-      ul.appendChild(li);
-    });
-
-    contentDiv.appendChild(ul);
-  }
-</script>
 </body>
 </html>
