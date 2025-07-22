@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Algorithm Topic Checklist</title>
+  <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Special Elite', monospace;
+      padding: 20px;
+      background-color: #703B3B;
+      color: #FAF4D0;
+    }
+    h1 {
+      text-align: center;
+      color: #FAF4D0;
+      font-size: 2em;
+      margin-bottom: 40px;
+    }
+    h2 {
+      color: #FAF4D0;
+      margin-top: 40px;
+      border-bottom: 1px solid #FAF4D0;
+      padding-bottom: 5px;
+    }
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    li {
+      background: rgba(255, 255, 255, 0.05);
+      margin-bottom: 10px;
+      padding: 15px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px dashed #FAF4D0;
+    }
+    .label {
+      flex: 1;
+      cursor: pointer;
+      user-select: all;
+    }
+    .label:hover {
+      text-decoration: underline;
+    }
+    .checks {
+      display: flex;
+      gap: 20px;
+    }
+    label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    input[type="checkbox"] {
+      transform: scale(1.2);
+      accent-color: #FAF4D0;
+    }
+  </style>
+</head>
+<body>
+<h1>💕 Anany & Shubhanshi's Algorithm Journal 💕</h1>
+
+<div id="content"></div>
+
+<script>
+  const data = {
+    "Unit I – Fundamentals & Divide and Conquer": [
+      "Asymptotic Notations",
+      "Substitution Method",
+      "Recursion Tree Method",
+      "Master’s Theorem",
+      "Binary Search",
+      "Merge Sort",
+      "Quick Sort",
+      "Heap and Heap Sort",
+      "Strassen’s Matrix Multiplication"
+    ],
+    "Unit II – Greedy Strategy": [
+      "Greedy Method Basics",
+      "Optimal Merge Patterns",
+      "Huffman Coding",
+      "Kruskal’s Algorithm",
+      "Prim’s Algorithm",
+      "Job Sequencing with Deadlines",
+      "Dijkstra’s Algorithm"
+    ],
+    "Unit III – Dynamic Programming": [
+      "Optimal Substructure & Overlapping Subproblems",
+      "0/1 Knapsack Problem",
+      "Fractional vs 0/1 Knapsack",
+      "Multistage Graph Problem",
+      "Reliability Design",
+      "Floyd-Warshall Algorithm"
+    ],
+    "Unit IV – Backtracking & Branch and Bound": [
+      "Backtracking Strategy",
+      "8-Queens Problem",
+      "Hamiltonian Cycle",
+      "Graph Coloring",
+      "Branch & Bound Basics",
+      "Traveling Salesman Problem",
+      "Lower Bound Theory",
+      "Intro to Parallel Algorithms"
+    ],
+    "Unit V – Trees, Graphs & Complexity": [
+      "Binary Search Trees (BST)",
+      "AVL Trees",
+      "M-Way, 2-3, B/B+/B* Trees",
+      "Red-Black Trees",
+      "DFS and BFS",
+      "P, NP, NP-Complete, NP-Hard",
+      "Polynomial-Time Reductions",
+      "Approximation Algorithms",
+      "Randomized Algorithms",
+      "Quantum Algorithms (Basics)"
+    ]
+  };
+
+  const contentDiv = document.getElementById('content');
+
+  function createCheckbox(id, label) {
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.id = id;
+    checkbox.checked = localStorage.getItem(id) === 'true';
+    checkbox.addEventListener('change', () => {
+      localStorage.setItem(id, checkbox.checked);
+    });
+
+    const span = document.createElement('span');
+    span.textContent = label;
+
+    const labelTag = document.createElement('label');
+    labelTag.appendChild(checkbox);
+    labelTag.appendChild(span);
+
+    return labelTag;
+  }
+
+  for (const [unit, topics] of Object.entries(data)) {
+    const h2 = document.createElement('h2');
+    h2.textContent = unit;
+    contentDiv.appendChild(h2);
+
+    const ul = document.createElement('ul');
+
+    topics.forEach((topic, index) => {
+      const li = document.createElement('li');
+
+      const span = document.createElement('span');
+      span.className = 'label';
+      span.textContent = topic;
+      span.title = 'Click to copy';
+      span.addEventListener('click', () => {
+        navigator.clipboard.writeText(topic).then(() => {
+          span.style.backgroundColor = '#FAF4D040';
+          setTimeout(() => { span.style.backgroundColor = ''; }, 400);
+        });
+      });
+
+      li.appendChild(span);
+
+      const checkDiv = document.createElement('div');
+      checkDiv.className = 'checks';
+      checkDiv.appendChild(createCheckbox(`${unit}-${index}-shubhanshi`, 'Shubhanshi'));
+      checkDiv.appendChild(createCheckbox(`${unit}-${index}-anany`, 'Anany'));
+
+      li.appendChild(checkDiv);
+      ul.appendChild(li);
+    });
+
+    contentDiv.appendChild(ul);
+  }
+</script>
+</body>
+</html>
