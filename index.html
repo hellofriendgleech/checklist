@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Algorithm Topic Checklist</title>
-  <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -25,52 +25,75 @@
     const user = urlParams.get('user') || 'default';
 
     const data = {
-      "Unit I – Fundamentals & Divide and Conquer": [
-        "Asymptotic Notations",
-        "Substitution Method",
-        "Recursion Tree Method",
-        "Master’s Theorem",
-        "Binary Search",
-        "Merge Sort",
-        "Quick Sort",
-        "Heap and Heap Sort",
-        "Strassen’s Matrix Multiplication"
+      "Unit I: Introduction to Software Engineering (Supports CO1 & CO2)": [
+        "Definition of Software Engineering",
+        "Software Engineering as a Layered Technology",
+        "Software Process vs Product Characteristics",
+        "Product Metrics (Size, Function Point, LOC)",
+        "Software Development Life Cycle (SDLC)",
+        "Waterfall Model and its Extensions",
+        "Prototyping Model",
+        "Spiral Model",
+        "RAD (Rapid Application Development) Model",
+        "Incremental Model",
+        "Component Assembly Model",
+        "Rational Unified Process (RUP)",
+        "Agile Development – Concepts and Principles",
+        "SCRUM Framework",
+        "Extreme Programming (XP)",
+        "Other Agile Models and Comparison with Traditional Models"
       ],
-      "Unit II – Greedy Strategy": [
-        "Greedy Method Basics",
-        "Optimal Merge Patterns",
-        "Huffman Coding",
-        "Kruskal’s Algorithm",
-        "Prim’s Algorithm",
-        "Job Sequencing with Deadlines",
-        "Dijkstra’s Algorithm"
+      "Unit II: Software Requirement Analysis (Supports CO4)": [
+        "Requirement Engineering Activities",
+        "Functional and Non-functional Requirements",
+        "User Requirements vs System Requirements",
+        "Requirement Elicitation Methods (Interview, Questionnaire, etc.)",
+        "Requirement Analysis Techniques",
+        "Software Requirement Specification (SRS) – Format & Importance",
+        "Use Case Modeling – Actors, Use Cases, Scenarios",
+        "Requirement Validation Techniques",
+        "Requirement Management – Change Control, Traceability"
       ],
-      "Unit III – Dynamic Programming": [
-        "Optimal Substructure & Overlapping Subproblems",
-        "0/1 Knapsack Problem",
-        "Fractional vs 0/1 Knapsack",
-        "Multistage Graph Problem",
-        "Reliability Design",
-        "Floyd-Warshall Algorithm"
+      "Unit III: Software Design (Supports CO1 & CO3)": [
+        "Software Design Process",
+        "Design Concepts and Principles (Abstraction, Modularity, etc.)",
+        "Structured Analysis and Design (SA/SD Methodology)",
+        "Object-Oriented Software Development",
+        "Architectural Design Styles (Layered, Client-Server, etc.)",
+        "User Interface Design Principles",
+        "Function-Oriented Design (DFD, Structure Charts)",
+        "UML Diagrams (Class, Sequence, Activity, Use Case, etc.)",
+        "Introduction to Design Patterns (Singleton, Observer – concepts only)",
+        "Design Metrics (Coupling, Cohesion, Complexity)"
       ],
-      "Unit IV – Backtracking & Branch and Bound": [
-        "Backtracking Strategy",
-        "8-Queens Problem",
-        "Hamiltonian Cycle",
-        "Graph Coloring",
-        "Branch & Bound Basics",
-        "Traveling Salesman Problem",
-        "Lower Bound Theory",
-        "Intro to Parallel Algorithms"
+      "Unit IV: Software Testing (Supports CO5)": [
+        "Introduction to Faults, Failures, and Errors",
+        "Software Testing Life Cycle (STLC)",
+        "Testing Levels – Unit, Integration, System, Acceptance",
+        "White Box Testing Techniques",
+        "Black Box Testing Techniques",
+        "Test Case Design – Boundary Value Analysis, Equivalence Partitioning",
+        "Test Criteria and Coverage",
+        "Verification and Validation Concepts",
+        "Debugging Techniques and Code Inspection",
+        "Test Plan and Test Metrics",
+        "Specialized Testing – Regression, Performance, Security",
+        "Testing Tools Overview (e.g., Selenium, JUnit – basics only)"
       ],
-      "Unit V – Trees, Graphs & Complexity": [
-        "Binary Search Trees (BST)",
-        "AVL Trees",
-        "M-Way, 2-3, B/B+/B* Trees",
-        "Red-Black Trees",
-        "DFS and BFS",
-        "P, NP, NP-Complete, NP-Hard"
-      ]
+      "Unit V: Software Project Management (Supports CO1, CO2 & CO3)": [
+        "Software Project Planning and Scheduling",
+        "Feasibility Study (Technical, Economic, Operational)",
+        "Project Metrics – Effort, Productivity, Schedule",
+        "Software Cost Estimation – LOC, Function Point, COCOMO Model",
+        "Project Monitoring and Control",
+        "Risk Assessment and Mitigation",
+        "Software Configuration Management (SCM)",
+        "Version Control Systems (Git – basic understanding)",
+        "Software Change Management",
+        "Software Re-engineering and Reverse Engineering",
+        "Capability Maturity Model (CMM) and CMMI – Levels and Purpose",
+        "Software Quality Assurance (SQA) – Processes and Techniques"
+      ],
     };
 
     async function getSavedChecks() {
@@ -109,9 +132,11 @@
     }
 
     for (const [unit, topics] of Object.entries(data)) {
-      const h2 = document.createElement('h2');
-      h2.textContent = unit;
-      contentDiv.appendChild(h2);
+      const details = document.createElement('details');
+      details.open = true;
+      const summary = document.createElement('summary');
+      summary.textContent = unit;
+      details.appendChild(summary);
 
       const ul = document.createElement('ul');
 
@@ -124,7 +149,7 @@
         span.title = 'Click to copy';
         span.addEventListener('click', () => {
           navigator.clipboard.writeText(topic).then(() => {
-            span.style.backgroundColor = '#FAF4D040';
+            span.style.backgroundColor = '#e2e8f0';
             setTimeout(() => { span.style.backgroundColor = ''; }, 400);
           });
         });
@@ -133,48 +158,54 @@
 
         const checkDiv = document.createElement('div');
         checkDiv.className = 'checks';
-        checkDiv.appendChild(createCheckbox(`${unit}-${index}-shubhanshi`, 'Shubhanshi'));
-        checkDiv.appendChild(createCheckbox(`${unit}-${index}-anany`, 'Anany'));
+        checkDiv.appendChild(createCheckbox(`${unit}-${index}-S`, 'S'));
+        checkDiv.appendChild(createCheckbox(`${unit}-${index}-A`, 'A'));
 
         li.appendChild(checkDiv);
         ul.appendChild(li);
       });
 
-      contentDiv.appendChild(ul);
+      details.appendChild(ul);
+      contentDiv.appendChild(details);
     }
   </script>
   <style>
     body {
-      font-family: 'Special Elite', monospace;
-      padding: 20px;
-      background-color: #703B3B;
-      color: #FAF4D0;
+      font-family: 'Inter', sans-serif;
+      background-color: #ffffff;
+      color: #1a202c;
+      margin: 0;
+      padding: 40px 20px;
+      max-width: 800px;
+      margin-inline: auto;
     }
     h1 {
       text-align: center;
-      color: #FAF4D0;
-      font-size: 2em;
+      font-size: 1.8em;
       margin-bottom: 40px;
+      color: #2d3748;
     }
-    h2 {
-      color: #FAF4D0;
-      margin-top: 40px;
-      border-bottom: 1px solid #FAF4D0;
-      padding-bottom: 5px;
+    summary {
+      font-size: 1.2em;
+      font-weight: 600;
+      color: #4a5568;
+      margin-top: 30px;
+      cursor: pointer;
+      margin-bottom: 10px;
     }
     ul {
       list-style: none;
-      padding-left: 0;
+      padding: 0;
     }
     li {
-      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid #e2e8f0;
+      padding: 12px 16px;
       margin-bottom: 10px;
-      padding: 15px;
-      border-radius: 8px;
+      border-radius: 6px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border: 1px dashed #FAF4D0;
+      flex-wrap: wrap;
     }
     .label {
       flex: 1;
@@ -186,21 +217,33 @@
     }
     .checks {
       display: flex;
-      gap: 20px;
+      gap: 12px;
+      margin-left: auto;
     }
     label {
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
+      font-size: 0.9em;
+      color: #2d3748;
     }
     input[type="checkbox"] {
       transform: scale(1.2);
-      accent-color: #FAF4D0;
+      accent-color: #4a5568;
+    }
+    @media (max-width: 600px) {
+      li {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .checks {
+        margin-top: 10px;
+      }
     }
   </style>
 </head>
 <body>
-<h1>💕 Anany & Shubhanshi's Algorithm Journal 💕</h1>
-<div id="content"></div>
+  <h1>SOFTWARE ENGINEERING CHECKLIST</h1>
+  <div id="content"></div>
 </body>
 </html>
